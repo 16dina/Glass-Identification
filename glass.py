@@ -39,7 +39,7 @@ def load_data():
 df = load_data()
 
 st.markdown("<h1 style='text-align: center;'>Glass Type Prediction</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>✨Welcome to my awesome AI task where I code a make machine learning models to predict types of glass! :)✨</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>✨Welcome to my awesome AI task where I make machine learning models to predict types of glass! :)✨</p>", unsafe_allow_html=True)
 # Create a two-column layout
 col1, col2 = st.columns(2)
 
