@@ -9,16 +9,13 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 
+
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.set_page_config(
     page_title="Glass Identification",
     page_icon=":mirror:",
+    layout="wide"  # Set the layout to wide mode
 )
-
-# Define containers to place certain part of the streamlit app in a specified container
-header = st.container()
-EDA = st.container()
-model = st.container()
 
 # Load the dataset
 @st.cache_data
@@ -41,50 +38,32 @@ def load_data():
 
 df = load_data()
 
-# Sidebar for choosing the model and hyperparameters
-st.sidebar.title("Choose a Model")
-selected_model = st.sidebar.selectbox("Select a Model", ["Random Forest", "AdaBoost", "K-Nearest Neighbors"])
-
-# Define hyperparameter controls
-if selected_model == "Random Forest":
-    st.sidebar.subheader("Random Forest Hyperparameters")
-    n_estimators = st.sidebar.slider("Number of Trees (n_estimators)", 1, 200, 100)
-
-elif selected_model == "AdaBoost":
-    st.sidebar.subheader("AdaBoost Hyperparameters")
-    n_estimators = st.sidebar.slider("Number of Estimators (n_estimators)", 1, 200, 50)
-
-elif selected_model == "K-Nearest Neighbors":
-    st.sidebar.subheader("K-Nearest Neighbors Hyperparameters")
-    n_neighbors = st.sidebar.slider("Number of Neighbors (n_neighbors)", 1, 20, 5)
+st.markdown("<h1 style='text-align: center;'>Glass Type Prediction</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>✨Welcome to my awesome AI task where I code a make machine learning models to predict types of glass! :)✨</p>", unsafe_allow_html=True)
+# Create a two-column layout
+col1, col2 = st.columns(2)
 
 # Data Exploration Section
-st.title("Glass Type Prediction")
+with col1:
+    st.header("EDA")
+    st.write("Choose what info you would like to view about the dataset")
+    sample_data_button = st.button("Sample Data")
+    dataset_summary_button = st.button("Dataset Summary")
+    dataset_information_button = st.button("Dataset Information")
+    distribution_button = st.button("Distribution of Glass Types")
 
-# Create buttons for different sections
-sample_data_button = st.button("Sample Data")
-dataset_summary_button = st.button("Dataset Summary")
-dataset_information_button = st.button("Dataset Information")
-distribution_button = st.button("Distribution of Glass Types")
-
-# Sample Data Section
-if sample_data_button:
-    with EDA:
+    if sample_data_button:
         st.subheader("Sample Data")
         st.markdown("The first 10 rows of the dataset")
         st.write(df.head(10))
         st.markdown("The last 10 rows of the dataset")
         st.write(df.tail(10))
 
-# Dataset Summary Section
-elif dataset_summary_button:
-    with EDA:
+    if dataset_summary_button:
         st.subheader("Dataset Summary (describe)")
         st.write(df.describe())
 
-# Dataset Information Section
-elif dataset_information_button:
-    with EDA:
+    if dataset_information_button:
         st.subheader("Dataset Information")
         info_text = f"Number of Rows: {df.shape[0]}\n"
         info_text += f"Number of Columns: {df.shape[1]}\n\n"
@@ -95,9 +74,7 @@ elif dataset_information_button:
         info_text += df.isnull().sum().to_string()
         st.text(info_text)
 
-# Distribution of Glass Types Section
-elif distribution_button:
-    with EDA:
+    if distribution_button:
         st.subheader("Distribution of Glass Types")
         glass_type_dict = {
             1: "building_windows_float_processed",
@@ -114,8 +91,24 @@ elif distribution_button:
         st.bar_chart(type_counts, use_container_width=True)  # Use container width for better visualization
 
 # Model Training Section
-with model:
+with col2:
     st.header("Model Training")
+    st.write("Choose a Model")
+    selected_model = st.selectbox("Select a Model", ["Random Forest", "AdaBoost", "K-Nearest Neighbors"])
+
+    # Define hyperparameter controls
+    if selected_model == "Random Forest":
+        st.subheader("Random Forest Hyperparameters")
+        n_estimators = st.slider("Number of Trees (n_estimators)", 1, 200, 100)
+
+    elif selected_model == "AdaBoost":
+        st.subheader("AdaBoost Hyperparameters")
+        n_estimators = st.slider("Number of Estimators (n_estimators)", 1, 200, 50)
+
+    elif selected_model == "K-Nearest Neighbors":
+        st.subheader("K-Nearest Neighbors Hyperparameters")
+        n_neighbors = st.slider("Number of Neighbors (n_neighbors)", 1, 20, 5)
+
 
     feature_cols = ['RI', 'Na', 'Mg', 'Al', 'Si', 'K', 'Ca', 'Ba', 'Fe']
     random_seed = 52
