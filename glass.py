@@ -20,7 +20,7 @@ EDA = st.container()
 model = st.container()
 
 # Load the dataset
-@st.cache_date
+@st.cache_data
 def load_data(): 
     column_headers = [
         'Id',
