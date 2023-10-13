@@ -12,6 +12,7 @@ from sklearn.metrics import confusion_matrix
 st.set_option('deprecation.showPyplotGlobalUse', False)
 st.set_page_config(
     page_title="Glass Identification",
+    page_icon=":mirror:",
 )
 
 # Define containers to place certain part of the streamlit app in a specified container
